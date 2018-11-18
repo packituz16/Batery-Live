@@ -1,0 +1,7 @@
+<RCC>
+  <qresource>
+    <file>icons8-spade-64.png</file>
+    <file>icons8-empty-battery-64.png</file>
+    <file>icons8-battery-level-64.png</file>
+  </qresource>
+</RCC>
