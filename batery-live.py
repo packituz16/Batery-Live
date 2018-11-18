@@ -10,6 +10,7 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
 
         self.app = app
         self.battery_threshold1 = False
+        self.batter_warning = 20
 
         # System Tray creation
         self.icon_tray = QSystemTrayIcon(QIcon(
@@ -17,6 +18,8 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         self.icon_tray.setToolTip("Battery Live!")
         self.icon_tray.show()
         self.create_menu()
+        self.icon_tray.setContextMenu(self.menu)
+        self.icon_tray.activated.connect(self.show_configs)
 
         # Window GUI attributes
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -42,7 +45,18 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         settings_action = self.menu.addAction("Settings")
         quit_action = self.menu.addAction("Quit")
 
+        settings_action.triggered.connect(self.open_settings)
         quit_action.triggered.connect(self.close)
+
+    def open_settings(self):
+        pass
+
+    def show_configs(self, reason):
+        # Si nuestro click al icono fue un click derecho no manejamos el evento
+        if reason == QSystemTrayIcon.Context:
+            return False
+        else:
+            self.show()
 
     # Get Battery Info
     def update_battery_info(self):
