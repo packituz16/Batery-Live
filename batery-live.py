@@ -32,6 +32,7 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         print(battery_info.percent)
         if battery_info is not None:
             if not battery_info.power_plugged and battery_info.percent <= 25 and not self.battery_threshold1:
+                self.battery_threshold1 = True
                 self.showFullScreen()
 
 
