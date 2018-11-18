@@ -10,4 +10,4 @@ The project is currently on beta stage and it's being tested on Solus
 distribution.
 
 ## Bugs
-![https://i.imgur.com/7OceX6V.png](Bugs)
+![Bugs](https://i.imgur.com/7OceX6V.png)
