@@ -78,7 +78,6 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
 
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
     window = MainWindow(app)
     app.exec_()
