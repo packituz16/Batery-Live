@@ -1,6 +1,6 @@
 # Batery-Live! Provides a low battery alert similar to the one used on
 # Windows 10 but for Linux
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QSettings
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
     QDialog
@@ -19,6 +19,8 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
     def __init__(self, app, parent=None):
         super(MainWindow, self).__init__(parent)
 
+        self.settings_dict = {"update_time":3000, "autostart":False,
+                              "battery_warning":20}
         self.app = app
         self.battery_threshold1 = False
         self.batter_warning = 20
