@@ -9,5 +9,13 @@ It uses PyQt5 for GUI.
 The project is currently on beta stage and it's being tested on Solus 
 distribution.
 
+## TODO
+- [x] Create Makefile
+- [] Create installation instructions.
+- [] Save & load user settings.
+- [] Improve GUI.
+- [] Add About Dialog.
+- [] Create executable.
+
 ## Bugs
 ![Bugs](https://i.imgur.com/7OceX6V.png)

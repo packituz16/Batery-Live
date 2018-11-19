@@ -1,3 +1,5 @@
+# Batery-Live! Provides a low battery alert similar to the one used on
+# Windows 10 but for Linux
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
@@ -5,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
 import MainWindow_GUI, Dialog_Settings
 import sys, psutil
 
-
+# TODO save and load user settings
 class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
     def __init__(self, parent=None):
         super(DialogSettings, self).__init__(parent)
@@ -23,6 +25,7 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         self.dialog_settings = DialogSettings()
 
         # System Tray creation
+        # TODO reorganize project directory structure
         self.icon_tray = QSystemTrayIcon(QIcon(
             QPixmap(":/icons8-spade-64.png")))
         self.icon_tray.setToolTip("Battery Live!")
