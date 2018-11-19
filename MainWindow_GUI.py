@@ -24,6 +24,7 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem, 0, 0, 1, 1)
         self.frame = QtWidgets.QFrame(self.centralwidget)
+        self.frame.setStyleSheet("background-color: rgba(253, 252, 255, 180);")
         self.frame.setObjectName("frame")
         self.formLayout = QtWidgets.QFormLayout(self.frame)
         self.formLayout.setFieldGrowthPolicy(QtWidgets.QFormLayout.AllNonFixedFieldsGrow)

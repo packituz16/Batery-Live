@@ -10,6 +10,7 @@ class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
     def __init__(self, parent=None):
         super(DialogSettings, self).__init__(parent)
         self.setupUi(self)
+        print("DIALOG")
 
 
 class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
@@ -19,6 +20,7 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         self.app = app
         self.battery_threshold1 = False
         self.batter_warning = 20
+        self.dialog_settings = DialogSettings()
 
         # System Tray creation
         self.icon_tray = QSystemTrayIcon(QIcon(
@@ -54,11 +56,11 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         quit_action = self.menu.addAction("Quit")
 
         settings_action.triggered.connect(self.open_settings)
-        quit_action.triggered.connect(self.close)
+        quit_action.triggered.connect(sys.exit)
 
+    # TODO check if user clicked CANCEL or OK
     def open_settings(self):
-        dialog_settings = DialogSettings()
-        dialog_settings.exec_()
+        self.dialog_settings.exec_()
 
     def show_configs(self, reason):
         # Si nuestro click al icono fue un click derecho no manejamos el evento
@@ -79,5 +81,6 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setQuitOnLastWindowClosed(False)
     window = MainWindow(app)
     app.exec_()
