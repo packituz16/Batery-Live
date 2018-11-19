@@ -41,7 +41,7 @@
     <item row="1" column="0">
      <widget class="QFrame" name="">
       <property name="styleSheet">
-       <string notr="true">background-color: rgba(253, 252, 255, 180);</string>
+       <string notr="true">background-color: rgba(253, 252, 255, 190);</string>
       </property>
       <layout class="QFormLayout" name="formLayout">
        <property name="fieldGrowthPolicy">
