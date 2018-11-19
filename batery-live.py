@@ -1,8 +1,16 @@
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
-import MainWindow_GUI
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
+    QDialog
+import MainWindow_GUI, Dialog_Settings
 import sys, psutil
+
+
+class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(DialogSettings, self).__init__(parent)
+        self.setupUi(self)
+
 
 class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
     def __init__(self, app, parent=None):
@@ -49,14 +57,15 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         quit_action.triggered.connect(self.close)
 
     def open_settings(self):
-        pass
+        dialog_settings = DialogSettings()
+        dialog_settings.exec_()
 
     def show_configs(self, reason):
         # Si nuestro click al icono fue un click derecho no manejamos el evento
         if reason == QSystemTrayIcon.Context:
             return False
         else:
-            self.show()
+            self.open_settings()
 
     # Get Battery Info
     def update_battery_info(self):
