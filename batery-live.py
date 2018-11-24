@@ -1,6 +1,6 @@
 # Batery-Live! Provides a low battery alert similar to the one used on
 # Windows 10 but for Linux
-from PyQt5.QtCore import Qt, QTimer, QSettings
+from PyQt5.QtCore import Qt, QTimer, QSettings, QDir, QFileInfo
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
     QDialog
@@ -79,9 +79,31 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         battery_info = psutil.sensors_battery()
         if battery_info is not None:
             print(battery_info.percent)
-            if not battery_info.power_plugged and battery_info.percent <= 25 and not self.battery_threshold1:
+            if not battery_info.power_plugged and battery_info.percent <= 25\
+                    and not self.battery_threshold1:
                 self.battery_threshold1 = True
                 self.showFullScreen()
+        else:
+            self.read_BAT()
+
+    def read_BAT(self):
+        file_BAT0_current = "/sys/class/power_supply/BAT0/charge_now"
+        file_info = QFileInfo(file_BAT0_current)
+        if file_info.isFile() and file_info.isReadable():
+            with open(file_BAT0_current) as bat_file:
+                current_charge = bat_file.readline()
+
+        file_BAT0_capacity = "/sys/class/power_supply/BAT0/charge_full"
+        file_info_current = QFileInfo(file_BAT0_capacity)
+        if file_info_current.isFile() and file_info_current.isReadable():
+            with open(file_BAT0_capacity) as bat_file:
+                full_capacity = bat_file.readline()
+
+        print("FULL: ", current_charge)
+        print("FULL: ", full_capacity)
+
+        bat_percentage = int(current_charge) / int(full_capacity)
+        print("Percentage: ", (int(full_capacity) // int(current_charge))*100)
 
 
 if __name__ == '__main__':
