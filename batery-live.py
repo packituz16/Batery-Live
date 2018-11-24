@@ -29,7 +29,7 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         # System Tray creation
         # TODO reorganize project directory structure
         self.icon_tray = QSystemTrayIcon(QIcon(
-            QPixmap(":/icons8-spade-64.png")))
+            QPixmap(":/icon-official.png")))
         self.icon_tray.setToolTip("Battery Live!")
         self.icon_tray.show()
         self.create_menu()
