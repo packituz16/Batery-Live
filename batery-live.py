@@ -18,6 +18,11 @@ Categories=System,Utility'''
 # PATH to autostart
 # .config/autostart/batery-live.desktop
 
+# /sys/class/power_supply/BAT0/status
+# Full
+# Discharging
+# Charging
+
 # TODO save and load user settings
 class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
     def __init__(self, settings, parent=None,):
