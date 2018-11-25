@@ -9,22 +9,28 @@ import sys, psutil
 
 # TODO save and load user settings
 class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None,):
         super(DialogSettings, self).__init__(parent)
         self.setupUi(self)
-        print("DIALOG")
+        self.settings = settings
+        self.load_settings()
+
+    def load_settings(self):
+        self.spinBox_batteryw.setValue(self.settings["battery_warning"])
+        self.checkBox_autostart.setChecked(self.settings["autostart"])
+        self.spinBox_update.setValue(self.settings["update_time"])
 
 
 class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
     def __init__(self, app, parent=None):
         super(MainWindow, self).__init__(parent)
 
-        self.settings_dict = {"update_time":3000, "autostart":False,
+        self.settings = {"update_time":3, "autostart":False,
                               "battery_warning":20}
         self.app = app
         self.battery_threshold1 = False
         self.batter_warning = 20
-        self.dialog_settings = DialogSettings()
+        self.dialog_settings = DialogSettings(self.settings)
 
         # System Tray creation
         # TODO reorganize project directory structure
@@ -49,9 +55,9 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         # self.move(width, height/3)
 
         # Timer to get battery info periodically
-        timer = QTimer(self)
-        timer.timeout.connect(self.update_battery_info)
-        timer.start(3000)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_battery_info)
+        self.timer.start(3000)
 
         self.pushButton.clicked.connect(self.hide)
 
@@ -65,7 +71,11 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
 
     # TODO check if user clicked CANCEL or OK
     def open_settings(self):
-        self.dialog_settings.exec_()
+        if self.dialog_settings.exec_():
+            self.settings["battery_warning"] = self.dialog_settings.spinBox_batteryw.value()
+            self.settings["autostart"] = self.dialog_settings.checkBox_autostart.isChecked()
+            self.settings["update_time"] = self.dialog_settings.spinBox_update.value()
+            self.timer.start(self.settings["update_time"]  * 1000)
 
     def show_configs(self, reason):
         # Si nuestro click al icono fue un click derecho no manejamos el evento
@@ -79,7 +89,8 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
         battery_info = psutil.sensors_battery()
         if battery_info is not None:
             print(battery_info.percent)
-            if not battery_info.power_plugged and battery_info.percent <= 25\
+            if not battery_info.power_plugged and\
+                    battery_info.percent <= self.settings.get("battery_warning")\
                     and not self.battery_threshold1:
                 self.battery_threshold1 = True
                 self.showFullScreen()
@@ -87,6 +98,9 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
             self.read_BAT()
 
     def read_BAT(self):
+        current_charge = None
+        full_capacity = None
+
         file_BAT0_current = "/sys/class/power_supply/BAT0/charge_now"
         file_info = QFileInfo(file_BAT0_current)
         if file_info.isFile() and file_info.isReadable():
@@ -99,11 +113,12 @@ class MainWindow(QMainWindow, MainWindow_GUI.Ui_MainWindow):
             with open(file_BAT0_capacity) as bat_file:
                 full_capacity = bat_file.readline()
 
-        print("FULL: ", current_charge)
-        print("FULL: ", full_capacity)
+        if current_charge is not None and full_capacity is not None:
+            print("FULL: ", current_charge)
+            print("FULL: ", full_capacity)
 
-        bat_percentage = int(current_charge) / int(full_capacity)
-        print("Percentage: ", (int(full_capacity) // int(current_charge))*100)
+            bat_percentage = int(current_charge) // int(full_capacity)
+            print("Percentage: ", (bat_percentage)*100)
 
 
 if __name__ == '__main__':
