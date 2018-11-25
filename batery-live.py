@@ -7,6 +7,17 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu,\
 import MainWindow_GUI, Dialog_Settings
 import sys, psutil
 
+desktop_file = '''[Desktop Entry]
+Name=Batery-Live!
+TryExec=batery-live
+Exec=batery-live
+Icon=batery-live
+Type=Application
+Categories=System,Utility'''
+
+# PATH to autostart
+# .config/autostart/batery-live.desktop
+
 # TODO save and load user settings
 class DialogSettings(QDialog, Dialog_Settings.Ui_Dialog):
     def __init__(self, settings, parent=None,):
